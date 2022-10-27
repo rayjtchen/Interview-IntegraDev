@@ -1,5 +1,6 @@
 package Library_System.Mapper;
 
+import Library_System.Domain.Author;
 import Library_System.Domain.Category;
 import Library_System.Utils.DBConnPool;
 
@@ -9,30 +10,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class CategoryMapper extends Mapper<Category>{
+public class AuthorMapper extends Mapper<Author> {
 
     private DBConnPool dbConnPool = DBConnPool.getInstance();
 
     private String createStatement(){
-        return "INSERT INTO category (id, name) VALUES (?, ?)";
+        return "INSERT INTO author (id, name) VALUES (?, ?)";
     }
 
     private String readOneStatement() {
-        return  "SELECT * FROM category WHERE  id = ?";
+        return  "SELECT * FROM author WHERE id = ?";
     }
 
     private String readListStatement() {
-        return  "SELECT * FROM category";
+        return  "SELECT * FROM author";
     }
 
     /**
-     * Retrieve all the categories from the category table
+     * Retrieve all the authors from the author table
      **/
     @Override
-    public ArrayList<Category> readList(){
+    public ArrayList<Author> readList() {
 
         String sql = readListStatement();
-        ArrayList<Category> result = new ArrayList<Category>();
+        ArrayList<Author> result = new ArrayList<Author>();
 
         Connection conn = dbConnPool.getConnection();
         PreparedStatement sqlStatement = null;
@@ -69,13 +70,13 @@ public class CategoryMapper extends Mapper<Category>{
     }
 
     /**
-     * Find and retrieve the category from the category table where category.id = input id
+     * Find and retrieve the author from the author table where author.id = input id
      **/
     @Override
-    public Category readOne(String id){
+    public Author readOne(String id) {
 
         String sql = readOneStatement();
-        Category result = null;
+        Author result = null;
 
         Connection conn = dbConnPool.getConnection();
         PreparedStatement sqlStatement = null;
@@ -113,10 +114,12 @@ public class CategoryMapper extends Mapper<Category>{
     }
 
     /**
-     * Due to time limitations, the following create method does not prevent duplicated category names.
+    * Due to time limitations, the following create method does not prevent duplicated author names.
+    * In fact, the author table should have contained more attributes (e.g., first name, last name...)
+    * than it is right now.
      **/
     @Override
-    public void create(Category category){
+    public void create(Author author) {
 
         String sql = createStatement();
         Connection conn = dbConnPool.getConnection();
@@ -125,8 +128,8 @@ public class CategoryMapper extends Mapper<Category>{
 
         try {
             sqlStatement = conn.prepareStatement(sql);
-            sqlStatement.setString(1, category.getId());
-            sqlStatement.setString(2, category.getName());
+            sqlStatement.setString(1, author.getId());
+            sqlStatement.setString(2, author.getName());
 
             if(sqlStatement.executeUpdate() > 0) {
                 //System.out.println("new category created successfully");
@@ -155,9 +158,9 @@ public class CategoryMapper extends Mapper<Category>{
     /**
      * Retrieve the ResultSet from the database query and load it into the corresponding object
      **/
-    public Category load(ResultSet rs) throws SQLException{
+    public Author load(ResultSet rs) throws SQLException {
         String id = rs.getString("id");
         String name = rs.getString("name");
-        return new Category(id, name);
+        return new Author(id, name);
     }
 }
