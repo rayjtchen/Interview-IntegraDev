@@ -129,7 +129,7 @@ public class CategoryMapper extends Mapper<Category>{
             sqlStatement.setString(2, category.getName());
 
             if(sqlStatement.executeUpdate() > 0) {
-                //System.out.println("new category created successfully");
+                //placeholder: do something if needed
             }
 
         } catch(SQLException e) {

@@ -1,7 +1,8 @@
 package Library_System.Mapper;
 
 import Library_System.Domain.Author;
-import Library_System.Domain.Publisher;
+import Library_System.Domain.Category;
+import Library_System.Domain.Item;
 import Library_System.Utils.DBConnPool;
 
 import java.sql.Connection;
@@ -10,30 +11,36 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class PublisherMapper extends Mapper<Publisher> {
+/**
+ * I have decided to create a separate mapper class for the item_author table to move some
+ * responsibility out of AuthorMapper class. This could increase the cohesion of
+ * mapper classes as AuthorMapper could purely focus on author table while
+ * ItemAuthorMpaaer will focus entirely on item_author table.
+ **/
+public class ItemAuthorMapper{
 
     private DBConnPool dbConnPool = DBConnPool.getInstance();
 
     private String createStatement(){
-        return "INSERT INTO publisher (id, name) VALUES (?, ?)";
+        return "INSERT INTO item_author (item_id, author_id) VALUES (?, ?)";
     }
 
-    private String readOneStatement() {
-        return  "SELECT * FROM publisher WHERE id = ?";
+    private String readAuthorsStatement() {
+        return  "SELECT * FROM item_author WHERE item_id = ?";
     }
 
-    private String readListStatement() {
-        return  "SELECT * FROM publisher";
+    private String readItemsStatement() {
+        return  "SELECT * FROM item_author WHERE author_id = ?";
     }
+
 
     /**
-     * Retrieve all the publishers from the publisher table
+     * Retrieve all authors from a given item
      **/
-    @Override
-    public ArrayList<Publisher> readList() {
+    public ArrayList<Author> readAuthors(String itemId) {
 
-        String sql = readListStatement();
-        ArrayList<Publisher> result = new ArrayList<Publisher>();
+        String sql = readAuthorsStatement();
+        ArrayList<Author> result = new ArrayList<Author>();
 
         Connection conn = dbConnPool.getConnection();
         PreparedStatement sqlStatement = null;
@@ -41,11 +48,12 @@ public class PublisherMapper extends Mapper<Publisher> {
 
         try {
             sqlStatement = conn.prepareStatement(sql);
+            sqlStatement.setString(1, itemId);
             sqlStatement.execute();
 
             rs = sqlStatement.getResultSet();
             while(rs.next()) {
-                result.add(load(rs));
+                result.add(loadAuthor(rs));
             }
 
         } catch(SQLException e) {
@@ -70,13 +78,12 @@ public class PublisherMapper extends Mapper<Publisher> {
     }
 
     /**
-     * Find and retrieve the publisher from the publisher table where publisher.id = input id
+     * Retrieve all items from a given author
      **/
-    @Override
-    public Publisher readOne(String id) {
+    public ArrayList<Item> readItems(String authorId) {
 
-        String sql = readOneStatement();
-        Publisher result = null;
+        String sql = readItemsStatement();
+        ArrayList<Item> result = new ArrayList<Item>();
 
         Connection conn = dbConnPool.getConnection();
         PreparedStatement sqlStatement = null;
@@ -84,12 +91,12 @@ public class PublisherMapper extends Mapper<Publisher> {
 
         try {
             sqlStatement = conn.prepareStatement(sql);
-            sqlStatement.setString(1, id);
+            sqlStatement.setString(1, authorId);
             sqlStatement.execute();
 
             rs = sqlStatement.getResultSet();
-            if (rs.next()) {
-                result = load(rs);
+            while(rs.next()) {
+                result.add(loadItem(rs));
             }
 
         } catch(SQLException e) {
@@ -114,10 +121,9 @@ public class PublisherMapper extends Mapper<Publisher> {
     }
 
     /**
-    * Due to time limitations, the following create method does not prevent duplicated publisher names.
+     * Add the author to the item
      **/
-    @Override
-    public void create(Publisher publisher) {
+    public void create(String itemId, String authorId) {
 
         String sql = createStatement();
         Connection conn = dbConnPool.getConnection();
@@ -126,8 +132,8 @@ public class PublisherMapper extends Mapper<Publisher> {
 
         try {
             sqlStatement = conn.prepareStatement(sql);
-            sqlStatement.setString(1, publisher.getId());
-            sqlStatement.setString(2, publisher.getName());
+            sqlStatement.setString(1, itemId);
+            sqlStatement.setString(2, authorId);
 
             if(sqlStatement.executeUpdate() > 0) {
                 //placeholder: do something if needed
@@ -154,11 +160,20 @@ public class PublisherMapper extends Mapper<Publisher> {
     }
 
     /**
-     * Retrieve the ResultSet from the database query and load it into the corresponding object
+     * Retrieve the ResultSet from the database query and load it into the corresponding object (for author)
      **/
-    public Publisher load(ResultSet rs) throws SQLException {
-        String id = rs.getString("id");
-        String name = rs.getString("name");
-        return new Publisher(id, name);
+    private Author loadAuthor(ResultSet rs) throws SQLException{
+        AuthorMapper authorMapper = new AuthorMapper();
+        String id = rs.getString("author_id");
+        return authorMapper.readOne(id);
+    }
+
+    /**
+     * Retrieve the ResultSet from the database query and load it into the corresponding object (for item)
+     **/
+    private Item loadItem(ResultSet rs) throws SQLException{
+        ItemMapper itemMapper = new ItemMapper();
+        String id = rs.getString("item_id");
+        return itemMapper.readOne(id);
     }
 }

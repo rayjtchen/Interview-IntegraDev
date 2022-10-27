@@ -132,7 +132,7 @@ public class AuthorMapper extends Mapper<Author> {
             sqlStatement.setString(2, author.getName());
 
             if(sqlStatement.executeUpdate() > 0) {
-                //System.out.println("new category created successfully");
+                //placeholder: do something if needed
             }
 
         } catch(SQLException e) {
