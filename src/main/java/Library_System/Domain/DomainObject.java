@@ -4,7 +4,7 @@ public abstract class DomainObject {
 
     private final String id;
 
-    protected DomainObject(String id) {
+    public DomainObject(String id) {
         this.id = id;
     }
 
