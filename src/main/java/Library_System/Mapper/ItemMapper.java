@@ -160,6 +160,11 @@ public class ItemMapper extends Mapper<Item>{
         }
     }
 
+    @Override
+    public void update(Item updatedDocument) {
+        return;
+    }
+
     /**
      * Retrieve the ResultSet from the database query and load it into the corresponding object
      **/

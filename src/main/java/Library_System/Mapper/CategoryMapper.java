@@ -152,6 +152,11 @@ public class CategoryMapper extends Mapper<Category>{
         }
     }
 
+    @Override
+    public void update(Category updatedDocument) {
+        return;
+    }
+
     /**
      * Retrieve the ResultSet from the database query and load it into the corresponding object
      **/

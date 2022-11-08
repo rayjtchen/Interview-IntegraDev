@@ -153,6 +153,11 @@ public class PublisherMapper extends Mapper<Publisher> {
         }
     }
 
+    @Override
+    public void update(Publisher updatedDocument) {
+        return;
+    }
+
     /**
      * Retrieve the ResultSet from the database query and load it into the corresponding object
      **/

@@ -25,6 +25,10 @@ public class BookMapper extends Mapper<Book> {
         return  "SELECT * FROM book";
     }
 
+    private String readListWithItemIdStatement() {
+        return  "SELECT * FROM book WHERE item_id = ?";
+    }
+
 
     /**
      * Retrieve all the books from the book table
@@ -157,6 +161,54 @@ public class BookMapper extends Mapper<Book> {
         }
     }
 
+    @Override
+    public void update(Book updatedDocument) {
+        return;
+    }
+
+    /**
+     * Given the item_id, retrieve all the books from the book table
+     **/
+    public ArrayList<Book> readListWithItemId(String id) {
+
+        String sql = readListWithItemIdStatement();
+
+        ArrayList<Book> result = new ArrayList<Book>();
+
+        Connection conn = dbConnPool.getConnection();
+        PreparedStatement sqlStatement = null;
+        ResultSet rs = null;
+
+        try {
+            sqlStatement = conn.prepareStatement(sql);
+            sqlStatement.setString(1, id);
+            sqlStatement.execute();
+
+            rs = sqlStatement.getResultSet();
+            while(rs.next()) {
+                result.add(load(rs));
+            }
+
+        } catch(SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (sqlStatement != null) {
+                    sqlStatement.close();
+                }
+                if (conn != null) {
+                    dbConnPool.releaseConnection(conn);
+                }
+            }
+            catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
+    }
 
     /**
      * Retrieve the ResultSet from the database query and load it into the corresponding object

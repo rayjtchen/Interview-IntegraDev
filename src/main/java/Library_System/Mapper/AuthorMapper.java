@@ -155,6 +155,11 @@ public class AuthorMapper extends Mapper<Author> {
         }
     }
 
+    @Override
+    public void update(Author updatedDocument) {
+        return;
+    }
+
     /**
      * Retrieve the ResultSet from the database query and load it into the corresponding object
      **/
