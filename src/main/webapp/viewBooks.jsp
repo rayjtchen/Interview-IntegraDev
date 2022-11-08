@@ -1,7 +1,8 @@
 <%@ page import="Library_System.Domain.Book" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="Library_System.Domain.Item" %>
-<%@ page import="Library_System.Domain.Author" %><%--
+<%@ page import="Library_System.Domain.Author" %>
+<%@ page import="Library_System.Domain.Publisher" %><%--
   Created by IntelliJ IDEA.
   User: raychen
   Date: 8/11/2022
@@ -108,5 +109,40 @@
             }
         %>
     </table>
+
+    <h1>Create Book</h1>
+    <form action="book" method="post" name="createBook">
+        <table style="width: 20%">
+            <tr>
+                <td>ISBN</td>
+                <td><input type="text" name="isbn" /></td>
+            </tr>
+            <tr>
+                <td>Version</td>
+                <td><input type="text" name="version" /></td>
+            </tr>
+            <tr>
+                <td>Publisher</td>
+                <td>
+                    <select name="publisherId">
+                        <% ArrayList<Publisher> publishers = (ArrayList<Publisher>) request.getAttribute("publishers"); %>
+                        <%
+                            for (Publisher publisher: publishers) {
+                        %>
+
+                        <option value= <%=publisher.getId()%> ><%=publisher.getName()%></option>
+
+                        <%
+                            }
+                        %>
+                    </select>
+                </td>
+            </tr>
+        </table>
+
+        <input name="itemId" value=<%=item.getId()%> type="hidden">
+        <input name="postType" value="createBook" type="hidden">
+        <input type="submit" value="Submit" />
+    </form>
 </body>
 </html>
