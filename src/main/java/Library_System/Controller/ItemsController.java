@@ -104,7 +104,7 @@ public class ItemsController extends HttpServlet{
             }
 
         }catch(Exception e) {
-            request.setAttribute("errorMessage", e.getMessage().);
+            request.setAttribute("errorMessage", e.getMessage());
             rd=request.getRequestDispatcher("error.jsp");
             rd.include(request, response);
         }
