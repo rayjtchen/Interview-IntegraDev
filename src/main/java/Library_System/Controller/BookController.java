@@ -1,7 +1,9 @@
 package Library_System.Controller;
 
+import Library_System.Domain.Author;
 import Library_System.Domain.Book;
 import Library_System.Domain.Item;
+import Library_System.Mapper.AuthorMapper;
 import Library_System.Mapper.BookMapper;
 import Library_System.Mapper.ItemMapper;
 import Library_System.Utils.Type;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 public class BookController extends HttpServlet {
 
     private ItemMapper itemMapper = new ItemMapper();
+    private AuthorMapper authorMapper = new AuthorMapper();
+    private BookMapper bookMapper = new BookMapper();
 
     public void init() {}
 
@@ -40,12 +44,14 @@ public class BookController extends HttpServlet {
                     String id = request.getParameter("id");
 
                     Item item = itemMapper.readOne(id);
-                    request.setAttribute("item", item);
 
-                    BookMapper bookMapper = new BookMapper();
                     ArrayList<Book> books = bookMapper.readListWithItemId(id);
 
+                    ArrayList<Author> authors = authorMapper.readList();
+
+                    request.setAttribute("item", item);
                     request.setAttribute("books", books);
+                    request.setAttribute("authors", authors);
                     rd=request.getRequestDispatcher("viewBooks.jsp");
                     rd.include(request, response);
 

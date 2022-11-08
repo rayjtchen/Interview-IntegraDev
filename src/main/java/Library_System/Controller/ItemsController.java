@@ -2,9 +2,7 @@ package Library_System.Controller;
 
 import Library_System.Domain.Category;
 import Library_System.Domain.Item;
-import Library_System.Mapper.CategoryMapper;
-import Library_System.Mapper.DataMapper;
-import Library_System.Mapper.ItemMapper;
+import Library_System.Mapper.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -87,12 +85,26 @@ public class ItemsController extends HttpServlet{
 
                     break;
 
+                case "addAuthor":
+
+                    ItemAuthorMapper itemAuthorMapper = new ItemAuthorMapper();
+
+                    String itemId = request.getParameter("itemId");
+                    String authorId = request.getParameter("authorId");
+                    type = request.getParameter("type");
+
+                    itemAuthorMapper.create(itemId, authorId);
+
+                    response.sendRedirect(request.getContextPath() + "/" + type + "?page=viewItem&id=" + itemId);
+
+                    break;
+
                 default:
                     throw new ServletException("404 resource not found");
             }
 
         }catch(Exception e) {
-            request.setAttribute("errorMessage", e.getMessage());
+            request.setAttribute("errorMessage", e.getMessage().);
             rd=request.getRequestDispatcher("error.jsp");
             rd.include(request, response);
         }

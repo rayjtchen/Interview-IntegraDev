@@ -53,6 +53,33 @@
         </tr>
     </table>
 
+    <h1>Add author for Book Item</h1>
+    <form action="items" method="post" name="addAuthor">
+        <table style="width: 20%">
+            <tr>
+                <td>Author</td>
+                <td>
+                    <select name="authorId">
+                        <% ArrayList<Author> authors = (ArrayList<Author>) request.getAttribute("authors"); %>
+                        <%
+                            for (Author author: authors) {
+                        %>
+
+                        <option value= <%=author.getId()%> ><%=author.getName()%></option>
+
+                        <%
+                            }
+                        %>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <input name="itemId" value=<%=item.getId()%> type="hidden">
+        <input name="type" value=<%=item.getType()%> type="hidden">
+        <input name="postType" value="addAuthor" type="hidden">
+        <input type="submit" value="Submit" />
+    </form>
+
     <h1>View Books</h1>
     <table style="width: 50%">
         <tr>
