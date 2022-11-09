@@ -63,4 +63,46 @@ public class BookCopyController extends HttpServlet {
             rd.include(request, response);
         }
     }
+
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        //Request setup
+        RequestDispatcher rd;
+
+        //Post setup
+        String postType = request.getParameter("postType");
+
+        try {
+            switch(postType) {
+                case "createBookCopy":
+
+                    String bookId = request.getParameter("bookId");
+
+                    Book book = bookMapper.readOne(bookId);
+
+                    BookCopy bookCopy = new BookCopy(book);
+
+                    DataMapper.create(bookCopy);
+
+                    response.sendRedirect(request.getContextPath() + "/bookCopy?page=viewCopies&id=" + bookId);
+
+                    break;
+
+                default:
+                    throw new ServletException("404 resource not found");
+            }
+
+        }catch(Exception e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            rd=request.getRequestDispatcher("error.jsp");
+            rd.include(request, response);
+        }
+    }
+
+
+
+
+
+
 }

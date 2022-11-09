@@ -80,6 +80,12 @@
             %>
     </table>
 
+    <h1>Create Book Copy</h1>
+    <form action="bookCopy" method="post" name="createBookCopy">
+        <input name="bookId" value=<%=book.getBook_id()%> type="hidden">
+        <input name="postType" value="createBookCopy" type="hidden">
+        <input type="submit" value="Submit" />
+    </form>
 
 </body>
 </html>
