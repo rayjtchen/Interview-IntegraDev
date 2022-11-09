@@ -29,7 +29,7 @@ The following figures are the domain class diagram and ER diagrams for the syste
 
 
 
-
+![plot](diagram/diagram.png?raw=true "Domain class diagram and ER diagrams")
 
 
 
