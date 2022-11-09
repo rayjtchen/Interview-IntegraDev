@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @WebServlet(name = "Book Page", value = "/book")
@@ -41,6 +42,9 @@ public class BookController extends HttpServlet {
                     String id = request.getParameter("id");
 
                     Item item = itemMapper.readOne(id);
+
+                    //input validation check
+                    if(item == null) throw new IllegalArgumentException("404 Resource not found");
 
                     ArrayList<Book> books = bookMapper.readListWithItemId(id);
 

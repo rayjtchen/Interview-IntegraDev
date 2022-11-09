@@ -39,6 +39,10 @@ public class BookCopyController extends HttpServlet {
                     String id = request.getParameter("id");
 
                     Book book = bookMapper.readOne(id);
+
+                    //input validation check
+                    if(book == null) throw new IllegalArgumentException("404 Resource not found");
+
                     ArrayList<BookCopy> bookCopies = bookCopyMapper.readListWithBookId(id);
 
                     request.setAttribute("bookCopies", bookCopies);
