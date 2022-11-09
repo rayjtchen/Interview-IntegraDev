@@ -85,6 +85,7 @@ public class ItemsController extends HttpServlet{
 
                     break;
 
+                //Add author for an item
                 case "addAuthor":
 
                     ItemAuthorMapper itemAuthorMapper = new ItemAuthorMapper();
@@ -109,11 +110,4 @@ public class ItemsController extends HttpServlet{
             rd.include(request, response);
         }
     }
-
-
-
-
-
-
-
 }

@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Database object resource pooling for DB connections
+ **/
 public class DBConnPool {
 
     //static variables

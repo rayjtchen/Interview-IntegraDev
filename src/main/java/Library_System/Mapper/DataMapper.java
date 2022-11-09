@@ -6,6 +6,10 @@ import Library_System.Utils.Type;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * A Mapper class to manage create and update functions without the need to specified with mapper class to use.
+ * This could be use for unit of work in the future.
+ **/
 public class DataMapper {
 
     public static <T extends Mapper<U>, U extends DomainObject> T getMapper(Class<U> c ) throws IllegalArgumentException {
@@ -17,15 +21,6 @@ public class DataMapper {
         else if (c == Publisher.class) return (T) new PublisherMapper();
         throw new IllegalArgumentException("Mapper class not found");
     }
-
-//    public static <T extends Mapper<U>, U extends DomainObject> T getTypeItemMapper(String type) throws IllegalArgumentException {
-//        if (Type.valueOf(type) == Type.book) return (T) new BookMapper();
-//
-//        //Add new TypeItem if needed e.g., movie, paper...etc
-//
-//
-//        throw new IllegalArgumentException("Type item Mapper class not found");
-//    }
 
     public static <T extends DomainObject> void create(T obj) throws SQLException {
         Mapper<T> mapper = getMapper((Class<T>) obj.getClass());
