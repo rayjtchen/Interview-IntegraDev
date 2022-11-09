@@ -23,7 +23,7 @@
     <% Item item = (Item) request.getAttribute("item"); %>
     <% ArrayList<Book> books = (ArrayList<Book>) request.getAttribute("books"); %>
 
-    <h1>Item Details</h1>
+    <h1>Book Item Details</h1>
     <table style="width: 50%">
         <tr>
             <th>ID</th>
@@ -81,7 +81,7 @@
         <input type="submit" value="Submit" />
     </form>
 
-    <h1>View Books</h1>
+    <h1>Corresponding Books</h1>
     <table style="width: 50%">
         <tr>
             <th>Book ID</th>
@@ -100,7 +100,7 @@
             <td><%=book.getVersion()%></td>
             <td><%=book.getPublisher().getName()%></td>
             <td>
-                <a href="${pageContext.request.contextPath}/copy?type=<%=book.getType()%>&id=<%=book.getId()%>">
+                <a href="${pageContext.request.contextPath}/bookCopy?page=viewCopies&id=<%=book.getBook_id()%>">
                     <button>view</button>
                 </a>
             </td>
