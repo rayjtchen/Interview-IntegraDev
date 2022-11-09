@@ -9,6 +9,7 @@ This is a library cataloguing system that is designed for librarians to manage a
 - Add an author to a book item
 - Register a new book type for a given book item
 - Register a new book copy for a given book type
+- View items, book types and book copies with a GUI
 
 ## System Design
 
